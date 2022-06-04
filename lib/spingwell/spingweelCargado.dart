@@ -14,7 +14,6 @@ class SpingWeelCargado extends StatefulWidget {
 class _SpingWeelCargadoState extends State<SpingWeelCargado> {
   int selected = 0;
   int selectedParticipante = 0;
-  GlobalKey<FormState> _formKey = new GlobalKey();
   String mensaje = "Gire la ruleta";
   String mensajeParticipante = "Gire la ruleta";
   String seleccionado = "";
@@ -36,40 +35,29 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.red,
         title: Center(
-          child: Text("Rueda de la Muerte"),
+          child: Text("Ruleta Personalizada"),
         ),
       ),
       backgroundColor: Colors.white,
-      body: Form(
-        key: _formKey,
-        child: ListView(
+      body: ListView(
+        children: [
+          Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  seleccionado == "" ? mensaje : seleccionado,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Divider(),
-              Container(
-                height: 300,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 400,
                 child: FortuneWheel(
                   animateFirst: false,
                   selected: selected,
                   physics: CircularPanPhysics(
                     duration: Duration(seconds: 1),
                     curve: Curves.decelerate,
+                    
                   ),
                   onFling: () {
                     setState(
@@ -78,13 +66,14 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
                       },
                     );
                   },
+                  //styleStrategy: UniformStyleStrategy(borderColor: Colors.white,color: Colors.black,borderWidth: 1),
                   /*styleStrategy: UniformStyleStrategy(
                   borderColor: Colors.black,
                   color: Colors.red,
                 ),*/
                   items: [
                     // ignore: sdk_version_ui_as_code
-                    for (var items in item) FortuneItem(child: Text(items))
+                    for (var items in item) FortuneItem(child: Text(items,style: TextStyle(color: Colors.white),))
                   ],
                   onAnimationEnd: () {
                     print("Valor: " + selected.toString());
@@ -103,42 +92,49 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
                   },
                 ),
               ),
-              Divider(),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selected = Random().nextInt(item.length);
-                  });
-                },
-                child: Container(
-                  color: Colors.blue,
-                  height: 40,
-                  width: 100,
-                  child: Center(
-                    child: Text(
-                      "SPIN",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-//----------------------------------------------------------------------------------------
-              Divider(color: Colors.red,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.black,
                 child: Text(
-                  seleccionadoParticipante == "" ? mensajeParticipante : seleccionadoParticipante,
+                  seleccionado == "" ? mensaje : seleccionado,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 24,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              Divider(),
-              Container(
-                height: 300,
-                child: FortuneWheel(
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selected = Random().nextInt(item.length);
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Colors.black,
+                  height: 40,
+                  width: 120,
+                  child: Center(
+                    child: Text(
+                      "Ruleta Prendas",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+//----------------------------------------------------------------------------------------
+            
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                //height: 400,
+                child: FortuneBar(
                   animateFirst: false,
                   selected: selectedParticipante,
                   physics: CircularPanPhysics(
@@ -152,13 +148,11 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
                       },
                     );
                   },
-                  styleStrategy: UniformStyleStrategy(
-                  borderColor: Colors.white,
-                  color: Colors.greenAccent,
-                ),
+                  styleStrategy: AlternatingStyleStrategy(),
+                  duration: Duration(seconds: 7),
                   items: [
                     // ignore: sdk_version_ui_as_code
-                    for (var items in itemParticipante) FortuneItem(child: Text(items))
+                    for (var items in itemParticipante) FortuneItem(child: Text(items,style: TextStyle(color: Colors.white),))
                   ],
                   onAnimationEnd: () {
                     print("Valor: " + selectedParticipante.toString());
@@ -177,29 +171,45 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
                   },
                 ),
               ),
-              Divider(),
-              GestureDetector(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.black,
+                child: Text(
+                  seleccionadoParticipante == "" ? mensajeParticipante : seleccionadoParticipante,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
                 onTap: () {
                   setState(() {
                     selectedParticipante = Random().nextInt(itemParticipante.length);
                   });
                 },
                 child: Container(
-                  color: Colors.blue,
+                  color: Colors.black,
                   height: 40,
-                  width: 200,
+                  width: 150,
                   child: Center(
                     child: Text(
-                      "SPIN PARTICIPANTE",
+                      "Barra de Participantes",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
           ],
         ),
+        ],
       ),
     );
   }

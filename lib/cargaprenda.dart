@@ -15,8 +15,8 @@ class _CargaPrendaState extends State<CargaPrenda>
   TextEditingController _prendasController = TextEditingController();
   TextEditingController _participantesController = TextEditingController();
   final particleOptions = ParticleOptions(
-    image: Image.network(
-        "http://assets.stickpng.com/images/58a1e021e33a543010fac278.png"),
+    image: Image.asset(
+        "assets/images/fuego.png"),
     baseColor: Colors.red,
     spawnOpacity: 0.0,
     opacityChangeRate: 0.25,
@@ -35,9 +35,9 @@ class _CargaPrendaState extends State<CargaPrenda>
     return Scaffold(
       appBar: AppBar(
         elevation: 0.2,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.red,
         title: Text(
-          "CREA PRENDA",
+          "Por Prenda",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -60,7 +60,7 @@ class _CargaPrendaState extends State<CargaPrenda>
                         decoration: InputDecoration(
                             hintText: "Prenda",
                             border: InputBorder.none,
-                            icon: Icon(Icons.assignment_ind)),
+                            icon: Icon(Icons.games)),
                         // ignore: missing_return
                         validator: (value) {
                           if (value.isEmpty) {
@@ -120,61 +120,69 @@ class _CargaPrendaState extends State<CargaPrenda>
                 padding: const EdgeInsets.all(8.0),
                 child: appProvider.lstPrendaModel.length != null &&
                         appProvider.lstPrendaModel.length > 0
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: appProvider.lstPrendaModel.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    new Row(
-                                      children: [
-                                        Container(
-                                          // width: 100,
-                                          //color: Colors.amber,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(15),
-                                            child: new Text(appProvider
-                                                    .lstPrendaModel[index]
-                                                    .getPrenda
-                                                    .toString() ??
-                                                "Prenda"),
+                    ? Container(
+                          height: 150,
+                          decoration: BoxDecoration(border: Border.all(
+                            color: Colors.grey,
+                            width: 1
+                          ),
+                          borderRadius: BorderRadius.horizontal()),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: appProvider.lstPrendaModel.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      new Row(
+                                        children: [
+                                          Container(
+                                            // width: 100,
+                                            //color: Colors.amber,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(15),
+                                              child: new Text(appProvider
+                                                      .lstPrendaModel[index]
+                                                      .getPrenda
+                                                      .toString() ??
+                                                  "Prenda"),
+                                            ),
                                           ),
-                                        ),
-                                        new Column(
-                                          children: [
-                                            Container(
-                                              //color: Colors.red,
-                                              child: IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    appProvider.removePrendas(
-                                                        id: appProvider
-                                                            .lstPrendaModel[
-                                                                index]
-                                                            .getId
-                                                            .toString());
-                                                    //Navigator.of(context).pop();
-                                                  });
-                                                },
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        })
+                                          new Column(
+                                            children: [
+                                              Container(
+                                                //color: Colors.red,
+                                                child: IconButton(
+                                                  icon: Icon(Icons.delete),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      appProvider.removePrendas(
+                                                          id: appProvider
+                                                              .lstPrendaModel[
+                                                                  index]
+                                                              .getId
+                                                              .toString());
+                                                      //Navigator.of(context).pop();
+                                                    });
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    )
                     : Center(
                         child: Text("No se han cargado Prendas"),
                       ),
@@ -246,6 +254,7 @@ class _CargaPrendaState extends State<CargaPrenda>
                     } else {
                       mensajeEmergente("Cargue texto", context);
                     }
+                    _participantesController.text="";
                   },
                 ),
               ),
@@ -255,61 +264,69 @@ class _CargaPrendaState extends State<CargaPrenda>
                         appProvider.lstParticipanteModel.length > 0
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: appProvider.lstParticipanteModel.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        new Row(
-                                          children: [
-                                            Container(
-                                              // width: 100,
-                                              //color: Colors.amber,
-                                              child: Padding(
-                                                padding: EdgeInsets.all(15),
-                                                child: new Text(appProvider
-                                                        .lstParticipanteModel[
-                                                            index]
-                                                        .getparticipante
-                                                        .toString() ??
-                                                    "Participante"),
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(border: Border.all(
+                            color: Colors.grey,
+                            width: 1
+                          ),
+                          borderRadius: BorderRadius.horizontal()),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: appProvider.lstParticipanteModel.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Card(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          new Row(
+                                            children: [
+                                              Container(
+                                                // width: 100,
+                                                //color: Colors.amber,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: new Text(appProvider
+                                                          .lstParticipanteModel[
+                                                              index]
+                                                          .getparticipante
+                                                          .toString() ??
+                                                      "Participante"),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        new Column(
-                                          children: [
-                                            Container(
-                                              //color: Colors.red,
-                                              child: IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    appProvider.removeParticipante(
-                                                        id: appProvider
-                                                            .lstParticipanteModel[
-                                                                index]
-                                                            .getId
-                                                            .toString());
-                                                  });
-                                                },
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                            ],
+                                          ),
+                                          new Column(
+                                            children: [
+                                              Container(
+                                                //color: Colors.red,
+                                                child: IconButton(
+                                                  icon: Icon(Icons.delete),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      appProvider.removeParticipante(
+                                                          id: appProvider
+                                                              .lstParticipanteModel[
+                                                                  index]
+                                                              .getId
+                                                              .toString());
+                                                    });
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ),
                       )
                     : Center(
                         child: Text("No se ha cargado Participantes"),

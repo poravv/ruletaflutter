@@ -57,7 +57,7 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Center(
-          child: Text("Rueda"),
+          child: Text("Ruleta por Categoria"),
         ),
       ),
       //backgroundColor: Colors.white,
@@ -147,9 +147,9 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 500,
+                //height: 500,
                 //color: Colors.red,
-                child: FortuneWheel(
+                child: FortuneBar(
                   animateFirst: false,
                   selected: selectedParticipante,
                   physics: CircularPanPhysics(
@@ -163,6 +163,7 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
                       },
                     );
                   },
+                  styleStrategy: AlternatingStyleStrategy(),
                   /*styleStrategy: UniformStyleStrategy(
                   borderColor: Colors.white,
                   color: Colors.greenAccent,
@@ -218,7 +219,7 @@ Padding(
                   width: 200,
                   child: Center(
                     child: Text(
-                      "Ruleta Participantes",
+                      "Barra de Participantes",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

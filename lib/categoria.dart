@@ -147,61 +147,69 @@ class _CategoriaState extends State<Categoria>
                         appProvider.lstParticipanteModel.length > 0
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: appProvider.lstParticipanteModel.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        new Row(
-                                          children: [
-                                            Container(
-                                              // width: 100,
-                                              //color: Colors.amber,
-                                              child: Padding(
-                                                padding: EdgeInsets.all(15),
-                                                child: new Text(appProvider
-                                                        .lstParticipanteModel[
-                                                            index]
-                                                        .getparticipante
-                                                        .toString() ??
-                                                    "Participante"),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        new Column(
-                                          children: [
-                                            Container(
-                                              //color: Colors.red,
-                                              child: IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    appProvider.removeParticipante(
-                                                      id: appProvider
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(border: Border.all(
+                            color: Colors.grey,
+                            width: 1
+                          ),
+                          borderRadius: BorderRadius.horizontal()),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: appProvider.lstParticipanteModel.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Card(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          new Row(
+                                            children: [
+                                              Container(
+                                                // width: 100,
+                                                //color: Colors.amber,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(15),
+                                                  child: new Text(appProvider
                                                           .lstParticipanteModel[
                                                               index]
-                                                          .getId
-                                                          .toString());
-                                                  });
-                                                },
+                                                          .getparticipante
+                                                          .toString() ??
+                                                      "Participante"),
+                                                ),
                                               ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                            ],
+                                          ),
+                                          new Column(
+                                            children: [
+                                              Container(
+                                                //color: Colors.red,
+                                                child: IconButton(
+                                                  icon: Icon(Icons.delete),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      appProvider.removeParticipante(
+                                                        id: appProvider
+                                                            .lstParticipanteModel[
+                                                                index]
+                                                            .getId
+                                                            .toString());
+                                                    });
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ),
                       )
                     : Center(
                         child: Text("No se ha cargado Participantes"),
