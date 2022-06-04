@@ -72,45 +72,114 @@ class _CargaPrendaState extends State<CargaPrenda>
                   ),
                 ),
               ),
-              Divider(),
-              Container(
-                // ignore: deprecated_member_use
-                child: FlatButton(
-                  color: Colors.orange,
-                  textColor: Colors.white,
-                  child: Text("Agregar Prenda"),
-                  onPressed: () {
-                    bool validacion = true;
-                    if (appProvider.lstPrendaModel.length == 0) {
-                      setState(() {
-                        appProvider.cargaPrendas(_prendasController.text);
-                      });
-                    }
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  // ignore: deprecated_member_use
+                  child: FlatButton(
+                    color: Colors.black,
+                    textColor: Colors.white,
+                    child: Text("Agregar Prenda"),
+                    onPressed: () {
+                      if (_prendasController.text.isNotEmpty) {
+                        bool validacion = true;
+                        if (appProvider.lstPrendaModel.length == 0) {
+                          setState(() {
+                            appProvider.cargaPrendas(_prendasController.text);
+                          });
+                        } else {
+                          for (int i = 0;
+                              appProvider.lstPrendaModel.length > i;
+                              i++) {
+                            if (appProvider.lstPrendaModel[i].getPrenda ==
+                                _prendasController.text) {
+                              validacion = false;
+                            }
+                          }
 
-                    for (int i = 0;
-                        appProvider.lstPrendaModel.length > i;
-                        i++) {
-                      if (appProvider.lstPrendaModel[i].getPrenda ==
-                          _prendasController.text) {
-                        validacion = false;
+                          if (validacion == true) {
+                            setState(() {
+                              appProvider.cargaPrendas(_prendasController.text);
+                            });
+                          } else {
+                            mensajeEmergente(
+                                "No puedes agregar la misma prenda", context);
+                          }
+                        }
+                        validacion = true;
+                        _prendasController.text = "";
+                      } else {
+                        mensajeEmergente("Cargue el texto", context);
                       }
-                    }
-
-                    if (validacion == true) {
-                      setState(() {
-                        appProvider.cargaPrendas(_prendasController.text);
-                      });
-                    } else {
-                      mensajeEmergente(
-                              "No puedes agregar la misma prenda", context);
-                    }
-                    validacion = true;
-                  },
+                    },
+                  ),
                 ),
               ),
-              Divider(),
-              LstPrendas(context),
-              Divider(),
+              //Aqui va la lista de prendas
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: appProvider.lstPrendaModel.length != null &&
+                        appProvider.lstPrendaModel.length > 0
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: appProvider.lstPrendaModel.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    new Row(
+                                      children: [
+                                        Container(
+                                          // width: 100,
+                                          //color: Colors.amber,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(15),
+                                            child: new Text(appProvider
+                                                    .lstPrendaModel[index]
+                                                    .getPrenda
+                                                    .toString() ??
+                                                "Prenda"),
+                                          ),
+                                        ),
+                                        new Column(
+                                          children: [
+                                            Container(
+                                              //color: Colors.red,
+                                              child: IconButton(
+                                                icon: Icon(Icons.delete),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    appProvider.removePrendas(
+                                                        id: appProvider
+                                                            .lstPrendaModel[
+                                                                index]
+                                                            .getId
+                                                            .toString());
+                                                    //Navigator.of(context).pop();
+                                                  });
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        })
+                    : Center(
+                        child: Text("No se han cargado Prendas"),
+                      ),
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Material(
@@ -140,42 +209,112 @@ class _CargaPrendaState extends State<CargaPrenda>
               Container(
                 // ignore: deprecated_member_use
                 child: FlatButton(
-                  color: Colors.orange,
+                  color: Colors.black,
                   textColor: Colors.white,
                   child: Text("Agregar Participante"),
                   onPressed: () {
-                    bool validacion = true;
-                    if (appProvider.lstParticipanteModel.length == 0) {
-                      setState(() {
-                        appProvider
-                            .cargaParticipantes(_participantesController.text);
-                      });
-                    }
-
-                    for (int i = 0;
-                        appProvider.lstParticipanteModel.length > i;
-                        i++) {
-                      if (appProvider.lstParticipanteModel[i].getparticipante ==
-                          _participantesController.text) {
-                        validacion = false;
+                    if (_participantesController.text.isNotEmpty) {
+                      bool validacion = true;
+                      if (appProvider.lstParticipanteModel.length == 0) {
+                        setState(() {
+                          appProvider.cargaParticipantes(
+                              _participantesController.text);
+                        });
+                      } else {
+                        for (int i = 0;
+                            appProvider.lstParticipanteModel.length > i;
+                            i++) {
+                          if (appProvider
+                                  .lstParticipanteModel[i].getparticipante ==
+                              _participantesController.text) {
+                            validacion = false;
+                          }
+                        }
+                        if (validacion == true) {
+                          setState(() {
+                            appProvider.cargaParticipantes(
+                                _participantesController.text);
+                          });
+                        } else {
+                          mensajeEmergente(
+                              "No puedes agregar al mismo participante",
+                              context);
+                        }
                       }
-                    }
-                    if (validacion == true) {
-                      setState(() {
-                        appProvider
-                            .cargaParticipantes(_participantesController.text);
-                      });
-                    } else {
 
-                       mensajeEmergente(
-                              "No puedes agregar al mismo participante", context);
+                      validacion = true;
+                    } else {
+                      mensajeEmergente("Cargue texto", context);
                     }
-                    validacion = true;
                   },
                 ),
               ),
-              Divider(),
-              LstParticipantes(context),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: appProvider.lstParticipanteModel.length != null &&
+                        appProvider.lstParticipanteModel.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: appProvider.lstParticipanteModel.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        new Row(
+                                          children: [
+                                            Container(
+                                              // width: 100,
+                                              //color: Colors.amber,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(15),
+                                                child: new Text(appProvider
+                                                        .lstParticipanteModel[
+                                                            index]
+                                                        .getparticipante
+                                                        .toString() ??
+                                                    "Participante"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        new Column(
+                                          children: [
+                                            Container(
+                                              //color: Colors.red,
+                                              child: IconButton(
+                                                icon: Icon(Icons.delete),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    appProvider.removeParticipante(
+                                                        id: appProvider
+                                                            .lstParticipanteModel[
+                                                                index]
+                                                            .getId
+                                                            .toString());
+                                                  });
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                      )
+                    : Center(
+                        child: Text("No se ha cargado Participantes"),
+                      ),
+              ),
               Divider(),
               Center(
                 child: Container(
@@ -192,7 +331,8 @@ class _CargaPrendaState extends State<CargaPrenda>
                             GestureDetector(
                               onTap: () {
                                 if (appProvider.lstPrendaModel.length == 1) {
-                                  mensajeEmergente("No puedes con una sola prenda", context);
+                                  mensajeEmergente(
+                                      "No puedes con una sola prenda", context);
                                 } else {
                                   if (appProvider.lstPrendaModel.length != 0) {
                                     if (appProvider
@@ -201,8 +341,8 @@ class _CargaPrendaState extends State<CargaPrenda>
                                       if (appProvider
                                               .lstParticipanteModel.length ==
                                           1) {
-
-                                             mensajeEmergente("No puedes jugar solo", context);
+                                        mensajeEmergente(
+                                            "No puedes jugar solo", context);
                                       } else {
                                         Navigator.push(
                                             context,
@@ -211,7 +351,8 @@ class _CargaPrendaState extends State<CargaPrenda>
                                                     SpingWeelCargado()));
                                       }
                                     } else {
-                                      mensajeEmergente("Agregue participantes", context);
+                                      mensajeEmergente(
+                                          "Agregue participantes", context);
                                     }
                                   } else {
                                     mensajeEmergente("Cargue prenda", context);
@@ -221,7 +362,7 @@ class _CargaPrendaState extends State<CargaPrenda>
                               child: Container(
                                 height: 40,
                                 width: 150,
-                                color: Colors.blue,
+                                color: Colors.red,
                                 child: Center(
                                   child: Text("Jugar",
                                       style: TextStyle(color: Colors.white)),
@@ -235,208 +376,52 @@ class _CargaPrendaState extends State<CargaPrenda>
                   ),
                 ),
               ),
-              Divider(),
-              Center(
-                child: Container(
-                  height: 100,
-                  //width: 300,
-                  //color: Colors.white,
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _participantesController =
-                                      new TextEditingController();
-                                  _prendasController =
-                                      new TextEditingController();
-                                  appProvider.limpiar();
-                                });
-                                //Navigator.pop(context);
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 150,
-                                color: Colors.red,
-                                child: Center(
-                                  child: Text("Limpiar",
-                                      style: TextStyle(color: Colors.white)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Container(
+                    height: 100,
+                    //width: 300,
+                    //color: Colors.white,
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _participantesController =
+                                        new TextEditingController();
+                                    _prendasController =
+                                        new TextEditingController();
+                                    appProvider.limpiar();
+                                  });
+                                  //Navigator.pop(context);
+                                },
+                                child: Container(
+                                  height: 40,
+                                  width: 150,
+                                  color: Colors.black,
+                                  child: Center(
+                                    child: Text("Limpiar",
+                                        style: TextStyle(color: Colors.white)),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-// ignore: non_constant_identifier_names
-  Widget LstPrendas(context) {
-    var appProvider = Provider.of<AppProvider>(context);
-    if (appProvider.lstPrendaModel.length != null &&
-        appProvider.lstPrendaModel.length > 0) {
-      return Container(
-        width: 200,
-        color: Colors.yellow,
-        child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: appProvider.lstPrendaModel.length,
-            itemBuilder: (BuildContext context, int index) {
-              return LstPrendasIndividuales(
-                id: appProvider.lstPrendaModel[index].getId,
-                prenda: appProvider.lstPrendaModel[index].getPrenda,
-              );
-            }),
-      );
-    } else {
-      return Center(
-        child: Text("No se ha cargado Prendas"),
-      );
-    }
-  }
-}
-
-// ignore: non_constant_identifier_names
-Widget LstParticipantes(context) {
-  var appProvider = Provider.of<AppProvider>(context);
-  if (appProvider.lstParticipanteModel.length != null &&
-      appProvider.lstParticipanteModel.length > 0) {
-    return Container(
-      width: 200,
-      color: Colors.yellow,
-      child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: appProvider.lstParticipanteModel.length,
-          itemBuilder: (BuildContext context, int index) {
-            return LstParticipantesIndividuales(
-              id: appProvider.lstParticipanteModel[index].getId,
-              participante:
-                  appProvider.lstParticipanteModel[index].getparticipante,
-            );
-          }),
-    );
-  } else {
-    return Center(
-      child: Text("No se ha cargado Participantes"),
-    );
-  }
-}
-
-class LstParticipantesIndividuales extends StatelessWidget {
-  final id;
-  final participante;
-
-  LstParticipantesIndividuales({
-    this.id,
-    this.participante,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var appProvider = Provider.of<AppProvider>(context);
-    return Card(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              new Row(
-                children: [
-                  Container(
-                    // width: 100,
-                    //color: Colors.amber,
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: new Text(
-                          this.participante.toString() ?? "Participante"),
-                    ),
-                  ),
-                ],
-              ),
-              new Column(
-                children: [
-                  Container(
-                    //color: Colors.red,
-                    child: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        appProvider.removeParticipante(id: this.id.toString());
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class LstPrendasIndividuales extends StatelessWidget {
-  final id;
-  final prenda;
-
-  LstPrendasIndividuales({
-    this.id,
-    this.prenda,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var appProvider = Provider.of<AppProvider>(context);
-    return Card(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              new Row(
-                children: [
-                  Container(
-                    // width: 100,
-                    //color: Colors.amber,
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: new Text(this.prenda.toString() ?? "Prenda"),
-                    ),
-                  ),
-                  new Column(
-                    children: [
-                      Container(
-                        //color: Colors.red,
-                        child: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            appProvider.removePrendas(id: this.id.toString());
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

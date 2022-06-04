@@ -1,6 +1,8 @@
 //@dart=2.9
+
 import 'dart:math';
 
+import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:provider/provider.dart';
@@ -16,138 +18,135 @@ class SpingWellCategoria extends StatefulWidget {
   _SpingWellCategoriaState createState() => _SpingWellCategoriaState();
 }
 
-class _SpingWellCategoriaState extends State<SpingWellCategoria> {
+class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTickerProviderStateMixin{
   int selected = 0;
   int selectedParticipante = 0;
-  GlobalKey<FormState> _formKey = new GlobalKey();
   String mensaje = "Gire la ruleta";
   String mensajeParticipante = "Gire la ruleta";
   String seleccionado = "";
   String seleccionadoParticipante = "";
   List<String> item = [];
+  final particleOptions = ParticleOptions(
+    image: Image.asset("assets/images/fuego.png"),
+    baseColor: Colors.red,
+    spawnOpacity: 0.0,
+    opacityChangeRate: 0.25,
+    minOpacity: 0.1,
+    maxOpacity: 0.4,
+    spawnMinSpeed: 20.0,
+    spawnMaxSpeed: 70.0,
+    spawnMinRadius: 20.0,
+    spawnMaxRadius: 30.0,
+    particleCount: 30,
+  );
 
   @override
   void initState() {
-
-    print(widget.categoriaModel.getDetCategoria);
-
     item=widget.categoriaModel.getDetCategoria;
-    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var appProvider = Provider.of<AppProvider>(context);
-    
     final List<String> itemParticipante = [];
-
-    
-
     for (int i = 0; i < appProvider.lstParticipanteModel.length; i++) {
       itemParticipante.add(appProvider.lstParticipanteModel[i].getparticipante);
     }
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.red,
         title: Center(
-          child: Text("Rueda de la Muerte"),
+          child: Text("Rueda"),
         ),
       ),
-      backgroundColor: Colors.white,
-      body: Form(
-        key: _formKey,
-        child: ListView(
+      //backgroundColor: Colors.white,
+      body: AnimatedBackground(
+        behaviour: RandomParticleBehaviour(options: particleOptions),
+        vsync: this,
+        child: SingleChildScrollView(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+            Container(
+              height: 500,
+              //color: Colors.black,
+              child: FortuneWheel(
+                animateFirst: false,
+                selected: selected,
+                physics: CircularPanPhysics(
+                  duration: Duration(seconds: 1),
+                  curve: Curves.decelerate,
+                ),
+                onFling: () {
+                  setState(
+                    () {
+                      selected = Random().nextInt(item.length);
+                    },
+                  );
+                },
+                items: [
+                  // ignore: sdk_version_ui_as_code
+                  for (var items in item) FortuneItem(child: Text(items))
+                ],
+                onAnimationEnd: () {
+                  print("Valor: " + selected.toString());
+                  /*item.forEach((element) {
+                    print("Elemento: " + element);
+                  });*/
+                  setState(() {
+                    for (int i = 0; i < item.length; i++) {
+                      if (selected == i) {
+                        seleccionado = item[i];
+                        print("Valor: " + item[i]);
+                        print("Indice: " + i.toString());
+                      }
+                    }
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.black,
                 child: Text(
                   seleccionado == "" ? mensaje : seleccionado,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 22,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              Divider(),
-              Container(
-                height: 500,
-                //color: Colors.black,
-                child: FortuneWheel(
-                  animateFirst: false,
-                  selected: selected,
-                  physics: CircularPanPhysics(
-                    duration: Duration(seconds: 1),
-                    curve: Curves.decelerate,
-                  ),
-                  onFling: () {
-                    setState(
-                      () {
-                        selected = Random().nextInt(item.length);
-                      },
-                    );
-                  },
-                  items: [
-                    // ignore: sdk_version_ui_as_code
-                    for (var items in item) FortuneItem(child: Text(items))
-                  ],
-                  onAnimationEnd: () {
-                    print("Valor: " + selected.toString());
-                    /*item.forEach((element) {
-                      print("Elemento: " + element);
-                    });*/
-                    setState(() {
-                      for (int i = 0; i < item.length; i++) {
-                        if (selected == i) {
-                          seleccionado = item[i];
-                          print("Valor: " + item[i]);
-                          print("Indice: " + i.toString());
-                        }
-                      }
-                    });
-                  },
-                ),
-              ),
-              Divider(),
-              GestureDetector(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
                 onTap: () {
                   setState(() {
                     selected = Random().nextInt(item.length);
                   });
                 },
                 child: Container(
-                  color: Colors.blue,
+                  color: Colors.black,
                   height: 40,
                   width: 150,
                   child: Center(
                     child: Text(
-                      "GIRAR PRENDA",
+                      "Ruleta Prendas",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-//----------------------------------------------------------------------------------------
-              Divider(color: Colors.red,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  seleccionadoParticipante == "" ? mensajeParticipante : seleccionadoParticipante,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              //Divider(),
-              Container(
+            ),
+      //----------------------------------------------------------------------------------------
+            
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
                 height: 500,
                 //color: Colors.red,
                 child: FortuneWheel(
@@ -190,30 +189,46 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> {
                   },
                 ),
               ),
-              Divider(),
-              GestureDetector(
+            ),
+Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.black,
+                child: Text(
+                  seleccionadoParticipante == "" ? mensajeParticipante : seleccionadoParticipante,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
                 onTap: () {
                   setState(() {
                     selectedParticipante = Random().nextInt(itemParticipante.length);
                   });
                 },
                 child: Container(
-                  color: Colors.blue,
+                  color: Colors.black,
                   height: 40,
                   width: 200,
                   child: Center(
                     child: Text(
-                      "GIRAR PARTICIPANTE",
+                      "Ruleta Participantes",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
           ],
+          ),
         ),
-      ),
+      )
     );
   }
 }

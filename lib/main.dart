@@ -28,8 +28,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   final particleOptions = ParticleOptions(
-    image: Image.network(
-        "http://assets.stickpng.com/images/58a1e021e33a543010fac278.png"),
+    image: Image.asset(
+        "assets/images/fuego.png"),
     baseColor: Colors.red,
     spawnOpacity: 0.0,
     opacityChangeRate: 0.25,
@@ -45,66 +45,62 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text("RULETA"),),
-          backgroundColor: Colors.black,
+          title: Center(child: Text("Ruleta"),),
+          backgroundColor: Colors.red,
         ),
         body: AnimatedBackground(
           behaviour: RandomParticleBehaviour(
             options: particleOptions
           ),
           vsync: this,
-          child: Center(
-            child: Container(
-              height: 100,
-              //width: 300,
-              //color: Colors.white,
-              child: Column(
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Categoria()));
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 150,
-                            color: Colors.redAccent,
-                            child: Center(
-                              child: Text("PLAY",
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                        ),
-                        Divider(),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CargaPrenda()));
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 150,
-                            color: Colors.redAccent,
-                            child: Center(
-                              child: Text("CREAR",
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                        ),
-                      ],
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Categoria()));
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 150,
+                      color: Colors.redAccent,
+                      child: Center(
+                        child: Text("Jugar Categoria",
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+          
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CargaPrenda()));
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 150,
+                      color: Colors.redAccent,
+                      child: Center(
+                        child: Text("Personalizado",
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
