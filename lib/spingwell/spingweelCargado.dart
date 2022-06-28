@@ -15,7 +15,7 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
   int selected = 0;
   int selectedParticipante = 0;
   String mensaje = "Gire la ruleta";
-  String mensajeParticipante = "Gire la ruleta";
+  String mensajeParticipante = "Gire la barra";
   String seleccionado = "";
   String seleccionadoParticipante = "";
 
@@ -36,9 +36,7 @@ class _SpingWeelCargadoState extends State<SpingWeelCargado> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Center(
-          child: Text("Ruleta Personalizada"),
-        ),
+        title: Text("Ruleta Personalizada"),
       ),
       backgroundColor: Colors.white,
       body: ListView(

@@ -16,7 +16,7 @@ class _CargaPrendaState extends State<CargaPrenda>
   TextEditingController _participantesController = TextEditingController();
   final particleOptions = ParticleOptions(
     image: Image.asset(
-        "assets/images/fuego.png"),
+        "assets/images/game.png"),
     baseColor: Colors.red,
     spawnOpacity: 0.0,
     opacityChangeRate: 0.25,
@@ -37,7 +37,7 @@ class _CargaPrendaState extends State<CargaPrenda>
         elevation: 0.2,
         backgroundColor: Colors.red,
         title: Text(
-          "Por Prenda",
+          "Personalizado",
           style: TextStyle(color: Colors.white),
         ),
       ),

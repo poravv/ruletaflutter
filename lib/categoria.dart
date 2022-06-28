@@ -47,11 +47,9 @@ class _CategoriaState extends State<Categoria>
       appBar: AppBar(
         elevation: 0.2,
         backgroundColor: Colors.red,
-        title: Center(
-          child: Text(
-            "Por categoria",
-            style: TextStyle(color: Colors.white),
-          ),
+        title: Text(
+          "Por categoria",
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: AnimatedBackground(
@@ -212,7 +210,7 @@ class _CategoriaState extends State<Categoria>
                         ),
                       )
                     : Center(
-                        child: Text("No se ha cargado Participantes"),
+                        child: Text("No se han cargado Participantes"),
                       ),
               ),
               Container(

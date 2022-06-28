@@ -22,7 +22,7 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
   int selected = 0;
   int selectedParticipante = 0;
   String mensaje = "Gire la ruleta";
-  String mensajeParticipante = "Gire la ruleta";
+  String mensajeParticipante = "Gire la barra";
   String seleccionado = "";
   String seleccionadoParticipante = "";
   List<String> item = [];
@@ -56,9 +56,7 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Center(
-          child: Text("Ruleta por Categoria"),
-        ),
+        title: Text("Ruleta por Categoria"),
       ),
       //backgroundColor: Colors.white,
       body: AnimatedBackground(

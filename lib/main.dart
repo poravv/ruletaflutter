@@ -29,7 +29,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   final particleOptions = ParticleOptions(
     image: Image.asset(
-        "assets/images/fuego.png"),
+        "assets/images/game.png"),
     baseColor: Colors.red,
     spawnOpacity: 0.0,
     opacityChangeRate: 0.25,
