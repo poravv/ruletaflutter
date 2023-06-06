@@ -28,8 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   final particleOptions = ParticleOptions(
-    image: Image.asset(
-        "assets/images/game.png"),
+    image: Image.asset("assets/images/game.png"),
     baseColor: Colors.red,
     spawnOpacity: 0.0,
     opacityChangeRate: 0.25,
@@ -71,9 +70,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                     child: Container(
                       height: 40,
                       width: 150,
-                      color: Colors.redAccent,
+                      color: Colors.black,
                       child: Center(
-                        child: Text("Jugar Categoria",
+                        child: Text("Por Categoría",
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),

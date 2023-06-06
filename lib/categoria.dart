@@ -264,10 +264,8 @@ class _CategoriaState extends State<Categoria>
 
   List<DropdownMenuItem<CategoriaModel>> getDropDownMenuItems() {
     List<DropdownMenuItem<CategoriaModel>> items = [];
-
     items.add(new DropdownMenuItem(
         value: null, child: new Text("--Seleccione categoria--")));
-
     for (CategoriaModel categorias in cargaCategoriaService.lstCategoria) {
       items.add(new DropdownMenuItem(
           value: categorias,

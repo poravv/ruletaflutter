@@ -13,12 +13,13 @@ class SpingWellCategoria extends StatefulWidget {
   final CategoriaModel categoriaModel;
 
   const SpingWellCategoria({Key key, this.categoriaModel}) : super(key: key);
-  
+
   @override
   _SpingWellCategoriaState createState() => _SpingWellCategoriaState();
 }
 
-class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTickerProviderStateMixin{
+class _SpingWellCategoriaState extends State<SpingWellCategoria>
+    with SingleTickerProviderStateMixin {
   int selected = 0;
   int selectedParticipante = 0;
   String mensaje = "Gire la ruleta";
@@ -42,7 +43,7 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
 
   @override
   void initState() {
-    item=widget.categoriaModel.getDetCategoria;
+    item = widget.categoriaModel.getDetCategoria;
     super.initState();
   }
 
@@ -54,180 +55,224 @@ class _SpingWellCategoriaState extends State<SpingWellCategoria> with SingleTick
       itemParticipante.add(appProvider.lstParticipanteModel[i].getparticipante);
     }
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: Text("Ruleta por Categoria"),
-      ),
-      //backgroundColor: Colors.white,
-      body: AnimatedBackground(
-        behaviour: RandomParticleBehaviour(options: particleOptions),
-        vsync: this,
-        child: SingleChildScrollView(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 500,
-              //color: Colors.black,
-              child: FortuneWheel(
-                animateFirst: false,
-                selected: selected,
-                physics: CircularPanPhysics(
-                  duration: Duration(seconds: 1),
-                  curve: Curves.decelerate,
-                ),
-                onFling: () {
-                  setState(
-                    () {
-                      selected = Random().nextInt(item.length);
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: Text("Por Categoría"),
+        ),
+        //backgroundColor: Colors.white,
+        body: AnimatedBackground(
+          behaviour: RandomParticleBehaviour(options: particleOptions),
+          vsync: this,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 500,
+                  //color: Colors.black,
+                  child: FortuneWheel(
+                    animateFirst: false,
+                    selected: selected,
+                    indicators: <FortuneIndicator>[
+                      FortuneIndicator(
+                        alignment: Alignment.topCenter, // <-- changing the position of the indicator
+                        child: TriangleIndicator(
+                          color: Colors.deepPurpleAccent, // <-- changing the color of the indicator
+                        ),
+                      ),
+                    ],
+                    physics: CircularPanPhysics(
+                      duration: Duration(seconds: 1),
+                      curve: Curves.decelerate,
+                    ),
+                    onFling: () {
+                      setState(
+                        () {
+                          selected = Random().nextInt(item.length);
+                        },
+                      );
                     },
-                  );
-                },
-                items: [
-                  // ignore: sdk_version_ui_as_code
-                  for (var items in item) FortuneItem(child: Text(items))
-                ],
-                onAnimationEnd: () {
-                  print("Valor: " + selected.toString());
-                  /*item.forEach((element) {
+                    items: [
+                      // ignore: sdk_version_ui_as_code
+                      for (var items in item)
+                        FortuneItem(
+                          child: Text(items),
+                          style: FortuneItemStyle(
+                              color: Colors
+                                  .black, // <-- custom circle slice fill color
+                              borderColor: Colors
+                                  .white, // <-- custom circle slice stroke color
+                              borderWidth:
+                                  1, // <-- custom circle slice stroke width
+                              textStyle: TextStyle(fontSize: 10)
+                              ),
+                        )
+                    ],
+                    onAnimationEnd: () {
+                      print("Valor: " + selected.toString());
+                      /*item.forEach((element) {
                     print("Elemento: " + element);
                   });*/
-                  setState(() {
-                    for (int i = 0; i < item.length; i++) {
-                      if (selected == i) {
-                        seleccionado = item[i];
-                        print("Valor: " + item[i]);
-                        print("Indice: " + i.toString());
-                      }
-                    }
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                color: Colors.black,
-                child: Text(
-                  seleccionado == "" ? mensaje : seleccionado,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selected = Random().nextInt(item.length);
-                  });
-                },
-                child: Container(
-                  color: Colors.black,
-                  height: 40,
-                  width: 150,
-                  child: Center(
-                    child: Text(
-                      "Ruleta Prendas",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-      //----------------------------------------------------------------------------------------
-            
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                //height: 500,
-                //color: Colors.red,
-                child: FortuneBar(
-                  animateFirst: false,
-                  selected: selectedParticipante,
-                  physics: CircularPanPhysics(
-                    duration: Duration(seconds: 1),
-                    curve: Curves.decelerate,
-                  ),
-                  onFling: () {
-                    setState(
-                      () {
-                        selectedParticipante = Random().nextInt(itemParticipante.length);
-                      },
-                    );
-                  },
-                  styleStrategy: AlternatingStyleStrategy(),
-                  /*styleStrategy: UniformStyleStrategy(
-                  borderColor: Colors.white,
-                  color: Colors.greenAccent,
-                  textStyle: TextStyle(fontSize: 14,color: Colors.black)
-                ),*/
-                  items: [
-                    // ignore: sdk_version_ui_as_code
-                    for (var items in itemParticipante) FortuneItem(child: Text(items))
-                  ],
-                  onAnimationEnd: () {
-                    print("Valor: " + selectedParticipante.toString());
-                    /*item.forEach((element) {
-                      print("Elemento: " + element);
-                    });*/
-                    setState(() {
-                      for (int i = 0; i < itemParticipante.length; i++) {
-                        if (selectedParticipante == i) {
-                          seleccionadoParticipante = itemParticipante[i];
-                          print("Valor: " + itemParticipante[i]);
-                          print("Indice: " + i.toString());
+                      setState(() {
+                        for (int i = 0; i < item.length; i++) {
+                          if (selected == i) {
+                            seleccionado = item[i];
+                            print("Valor: " + item[i]);
+                            print("Indice: " + i.toString());
+                          }
                         }
-                      }
-                    });
-                  },
-                ),
-              ),
-            ),
-Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                color: Colors.black,
-                child: Text(
-                  seleccionadoParticipante == "" ? mensajeParticipante : seleccionadoParticipante,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
+                      });
+                    },
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedParticipante = Random().nextInt(itemParticipante.length);
-                  });
-                },
-                child: Container(
-                  color: Colors.black,
-                  height: 40,
-                  width: 200,
-                  child: Center(
+                Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Container(
+                    //color: Colors.black,
+                    margin: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(3.0),
+                    width: 400,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 2.0, color: Colors.black)),
                     child: Text(
-                      "Barra de Participantes",
-                      style: TextStyle(color: Colors.white),
+                      seleccionado == "" ? mensaje : seleccionado,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 19,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.all(16.0),
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          selected = Random().nextInt(item.length);
+                        });
+                      },
+                      child: Text(
+                        'Girar Ruleta',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: FortuneBar(
+                      animateFirst: false,
+                      selected: selectedParticipante,
+                      indicators: <FortuneIndicator>[
+                      FortuneIndicator(
+                        alignment: Alignment.topCenter, 
+                        child: RectangleIndicator(
+                          borderColor: Colors.deepPurpleAccent,
+                        ),
+                      ),
+                    ],
+                      physics: CircularPanPhysics(
+                        duration: Duration(seconds: 1),
+                        curve: Curves.decelerate,
+                      ),
+                      onFling: () {
+                        setState(
+                          () {
+                            selectedParticipante =
+                                Random().nextInt(itemParticipante.length);
+                          },
+                        );
+                      },
+                      //styleStrategy: AlternatingStyleStrategy(),
+                      styleStrategy: UniformStyleStrategy(
+                        color:
+                            Colors.black, // <-- custom circle slice fill color
+                        borderColor: Colors
+                            .white, // <-- custom circle slice stroke color
+                        borderWidth: 2,
+                        textAlign: TextAlign.end,
+                      ),
+
+                      items: [
+                        // ignore: sdk_version_ui_as_code
+                        for (var items in itemParticipante)
+                          FortuneItem(
+                            child: Text(
+                              items,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                      ],
+                      onAnimationEnd: () {
+                        //print("Valor: " + selectedParticipante.toString());
+                        setState(() {
+                          for (int i = 0; i < itemParticipante.length; i++) {
+                            if (selectedParticipante == i) {
+                              seleccionadoParticipante = itemParticipante[i];
+                              //print("Valor: " + itemParticipante[i]);
+                              //print("Indice: " + i.toString());
+                            }
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    //color: Colors.black,
+                    margin: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(3.0),
+                    width: 400,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 2.0, color: Colors.black)),
+                    child: Text(
+                      seleccionadoParticipante == ""
+                          ? mensajeParticipante
+                          : seleccionadoParticipante,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 19,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: const EdgeInsets.all(16.0),
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          selectedParticipante =
+                              Random().nextInt(itemParticipante.length);
+                        });
+                      },
+                      child: Text(
+                        'Barra de Participantes',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )),
+              ],
             ),
-          ],
           ),
-        ),
-      )
-    );
+        ));
   }
 }

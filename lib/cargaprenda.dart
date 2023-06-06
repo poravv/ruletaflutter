@@ -1,9 +1,11 @@
 import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ruleta1/cargaCategoria.dart';
 import 'package:ruleta1/provider/AppProvider.dart';
-import 'package:ruleta1/spingwell/spingweelCargado.dart';
+import 'package:ruleta1/spingwell/spingweelPersonalizado.dart';
 import 'package:ruleta1/utils/alerta.dart';
+import 'package:ruleta1/model/categoriaModel.dart';
 
 class CargaPrenda extends StatefulWidget {
   @override
@@ -14,9 +16,12 @@ class _CargaPrendaState extends State<CargaPrenda>
     with SingleTickerProviderStateMixin {
   TextEditingController _prendasController = TextEditingController();
   TextEditingController _participantesController = TextEditingController();
+  List<DropdownMenuItem<CategoriaModel>> _dropDownMenuItemsCategoria;
+  CargaCategoriaService cargaCategoriaService = CargaCategoriaService();
+  CategoriaModel _currentCategoria;
+
   final particleOptions = ParticleOptions(
-    image: Image.asset(
-        "assets/images/game.png"),
+    image: Image.asset("assets/images/game.png"),
     baseColor: Colors.red,
     spawnOpacity: 0.0,
     opacityChangeRate: 0.25,
@@ -28,6 +33,33 @@ class _CargaPrendaState extends State<CargaPrenda>
     spawnMaxRadius: 30.0,
     particleCount: 30,
   );
+
+  List<DropdownMenuItem<CategoriaModel>> getDropDownMenuItems() {
+    List<DropdownMenuItem<CategoriaModel>> items = [];
+    items.add(new DropdownMenuItem(
+        value: null, child: new Text("--Cargar desde categoria--")));
+    for (CategoriaModel categorias in cargaCategoriaService.lstCategoria) {
+      items.add(new DropdownMenuItem(
+          value: categorias,
+          child: new Text(categorias.getcategoria.toString())));
+    }
+    return items;
+  }
+
+  void changedDropDownItemCategoria(CategoriaModel selectedCategoria) {
+    //print("Selected categoria $selectedCategoria");
+    setState(() {
+      _currentCategoria = selectedCategoria;
+    });
+  }
+
+  @override
+  void initState() {
+    cargaCategoriaService.cargaCategorias();
+    _dropDownMenuItemsCategoria = getDropDownMenuItems();
+    _currentCategoria = _dropDownMenuItemsCategoria[0].value;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +79,25 @@ class _CargaPrendaState extends State<CargaPrenda>
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                  value: _currentCategoria,
+                  items: _dropDownMenuItemsCategoria,
+                  onChanged: (e){
+                    
+                    changedDropDownItemCategoria(e);
+                    //print(e.getDetCategoria);
+                    for (int i = 0;e.getDetCategoria.length > i;i++) {
+                            //print('Entra en selected');
+                            setState(() {appProvider.cargaPrendas(e.getDetCategoria[i]);});
+                      }
+                  },
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Material(
@@ -121,68 +172,66 @@ class _CargaPrendaState extends State<CargaPrenda>
                 child: appProvider.lstPrendaModel.length != null &&
                         appProvider.lstPrendaModel.length > 0
                     ? Container(
-                          height: 150,
-                          decoration: BoxDecoration(border: Border.all(
-                            color: Colors.grey,
-                            width: 1
-                          ),
-                          borderRadius: BorderRadius.horizontal()),
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: appProvider.lstPrendaModel.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      new Row(
-                                        children: [
-                                          Container(
-                                            // width: 100,
-                                            //color: Colors.amber,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(15),
-                                              child: new Text(appProvider
-                                                      .lstPrendaModel[index]
-                                                      .getPrenda
-                                                      .toString() ??
-                                                  "Prenda"),
+                        height: 150,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.horizontal()),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: appProvider.lstPrendaModel.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        new Row(
+                                          children: [
+                                            Container(
+                                              width: 320,
+                                              //color: Colors.amber,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(15),
+                                                child: new Text(appProvider
+                                                        .lstPrendaModel[index]
+                                                        .getPrenda
+                                                        .toString() ??
+                                                    "Prenda"),
+                                              ),
                                             ),
-                                          ),
-                                          new Column(
-                                            children: [
-                                              Container(
-                                                //color: Colors.red,
-                                                child: IconButton(
-                                                  icon: Icon(Icons.delete),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      appProvider.removePrendas(
-                                                          id: appProvider
-                                                              .lstPrendaModel[
-                                                                  index]
-                                                              .getId
-                                                              .toString());
-                                                      //Navigator.of(context).pop();
-                                                    });
-                                                  },
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                    )
+                                            new Column(
+                                              children: [
+                                                Container(
+                                                  //color: Colors.red,
+                                                  child: IconButton(
+                                                    icon: Icon(Icons.delete),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        appProvider.removePrendas(
+                                                            id: appProvider
+                                                                .lstPrendaModel[
+                                                                    index]
+                                                                .getId
+                                                                .toString());
+                                                        //Navigator.of(context).pop();
+                                                      });
+                                                    },
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                      )
                     : Center(
                         child: Text("No se han cargado Prendas"),
                       ),
@@ -254,7 +303,7 @@ class _CargaPrendaState extends State<CargaPrenda>
                     } else {
                       mensajeEmergente("Cargue texto", context);
                     }
-                    _participantesController.text="";
+                    _participantesController.text = "";
                   },
                 ),
               ),
@@ -266,15 +315,14 @@ class _CargaPrendaState extends State<CargaPrenda>
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           height: 150,
-                          decoration: BoxDecoration(border: Border.all(
-                            color: Colors.grey,
-                            width: 1
-                          ),
-                          borderRadius: BorderRadius.horizontal()),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.horizontal()),
                           child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              itemCount: appProvider.lstParticipanteModel.length,
+                              itemCount:
+                                  appProvider.lstParticipanteModel.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
                                   child: Column(
@@ -286,7 +334,7 @@ class _CargaPrendaState extends State<CargaPrenda>
                                           new Row(
                                             children: [
                                               Container(
-                                                // width: 100,
+                                                width: 320,
                                                 //color: Colors.amber,
                                                 child: Padding(
                                                   padding: EdgeInsets.all(15),
@@ -308,12 +356,13 @@ class _CargaPrendaState extends State<CargaPrenda>
                                                   icon: Icon(Icons.delete),
                                                   onPressed: () {
                                                     setState(() {
-                                                      appProvider.removeParticipante(
-                                                          id: appProvider
-                                                              .lstParticipanteModel[
-                                                                  index]
-                                                              .getId
-                                                              .toString());
+                                                      appProvider
+                                                          .removeParticipante(
+                                                              id: appProvider
+                                                                  .lstParticipanteModel[
+                                                                      index]
+                                                                  .getId
+                                                                  .toString());
                                                     });
                                                   },
                                                 ),
